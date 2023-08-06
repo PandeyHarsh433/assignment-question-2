@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Highlighted Content</title>
+  </head>
+  <body>
+    <div id="content"></div>
+
+    <script>
+      function highlightHTMLContent(
+        htmlContent,
+        plainText,
+        plainTextPositions
+      ) {
+        let result = htmlContent;
+        let offset = 0;
+        for (let i = 0; i < plainTextPositions.length; i++) {
+          let start = plainTextPositions[i].start;
+          let end = plainTextPositions[i].end;
+          let textToHighlight = plainText.substring(start, end);
+          let indexInHTML = result.indexOf(textToHighlight, offset);
+          if (indexInHTML !== -1) {
+            result =
+              result.substring(0, indexInHTML) +
+              "<mark>" +
+              textToHighlight +
+              "</mark>" +
+              result.substring(indexInHTML + textToHighlight.length);
+            offset = indexInHTML + textToHighlight.length + 13;
+          }
+        }
+        return result;
+      }
+
+      const htmlContent =
+        '<p><span>Hi David<br><br>Headline: Energix Closes $520 Million Financing and Tax Equity Deal to Fund New Solar Projects<br><br>Summary: Two deals with Morgan Stanley Renewables Inc. and Santander CIB will help finance the construction and operation of six utility Equity scale solar…<br><br>Read the full article <a href="https://content.seleritycorp.com/hosted/assets/www/UKMW47_hYz_RGzPSpHm44Hi1L49HdNBhs1OkKKW2OPI">here</a><br><br>-------------------------------------<br><br>You received this because you are subscribed to news related to <a href="https://iris.steeleye.co/market/instruments?search=ES0113900J37">ES0113900J37</a>, and this story was marked as 82% relevant.<br><br>Copyright of PR Newswire. All Rights Reserved. Terms and Conditions | Privacy Policy.';
+      const plainText =
+        "Hi David Headline: Energix Closes $520 Million Financing and Tax Equity Deal to Fund New Solar Projects Summary: Two deals with Morgan Stanley Renewables Inc. and Santander CIB will help finance the construction and operation of six utility Equity scale solar… Read the full article here ------------------------------------- You received this because you are subscribed to news related to ES0113900J37 , and this story was marked as 82% relevant. Copyright of PR Newswire.";
+      const plainTextPositions = [
+        {
+          start: 241,
+          end: 247,
+        },
+        {
+          start: 518,
+          end: 525,
+        },
+      ];
+
+      const highlightedContent = highlightHTMLContent(
+        htmlContent,
+        plainText,
+        plainTextPositions
+      );
+
+      document.getElementById("content").innerHTML = highlightedContent;
+    </script>
+  </body>
+</html>
